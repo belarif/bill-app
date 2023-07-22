@@ -2,15 +2,16 @@
  * @jest-environment jsdom
  */
 
-import { screen } from "@testing-library/dom"
-import NewBillUI from "../views/NewBillUI.js"
+import NewBill from "../containers/NewBill";
+import NewBillUI from "../views/NewBillUI";
 
-describe("Given I am connected as an employee", () => {
-  describe("When I am on NewBill Page", () => {
-    test("should display, 'Envoyer une note de frais'", () => {
+describe('Given i am connected as an employee', () => {
+  describe('When i am on new bill page', () => {
+    test('That NewBill class is instantiable', () => {
       const html = NewBillUI()
       document.body.innerHTML = html
-      expect(screen.getByTestId("title").textContent).toEqual("Envoyer une note de frais")
+      const newBillObjet = new NewBill({ document, onNavigate : {}, store : {}, localStorage : {}});
+      expect(newBillObjet).toBeInstanceOf(NewBill);
     })
   })
 })
