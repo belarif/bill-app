@@ -2,14 +2,14 @@
  * @jest-environment jsdom
  */
 
-import {screen, waitFor} from "@testing-library/dom"
-import BillsUI from "../views/BillsUI.js"
+import {screen, waitFor, fireEvent} from "@testing-library/dom"
 import { bills } from "../fixtures/bills.js"
 import Bills from "../containers/Bills.js";
-import { ROUTES_PATH} from "../constants/routes.js";
+import { ROUTES_PATH, ROUTES} from "../constants/routes.js";
 import {localStorageMock} from "../__mocks__/localStorage.js";
 
 import router from "../app/Router.js";
+import BillsUI from "../views/BillsUI.js";
 
 describe("Given I am connected as an employee", () => {
   describe("When I am on Bills Page", () => {
@@ -56,6 +56,25 @@ describe("Given I am connected as an employee", () => {
       expect(testBillsSorted.map((bill) => bill.id)).toEqual(
         billsSorted.map((bill) => bill.id)
       );
+    })
+
+    test('That user is redirected to newBill page when he clicks on newBill button', () => {
+      Object.defineProperty(window, 'localStorage', { value: localStorageMock })
+      window.localStorage.setItem('user', JSON.stringify({
+        type: 'Employee'
+      }))
+
+      const onNavigate = (pathname) => {
+        document.body.innerHTML = ROUTES({ pathname });
+      };
+
+      document.body.innerHTML = BillsUI({bills})
+      const billsObjet = new Bills({ document, onNavigate, store : {}, localStorage : localStorageMock});
+      const handleClick = jest.fn(billsObjet.handleClickNewBill)
+      const buttonNewBill = screen.getByTestId('btn-new-bill')
+      buttonNewBill.addEventListener('click', handleClick)
+      fireEvent.click(buttonNewBill)
+      expect(handleClick).toHaveBeenCalled()
     })
   })
 })
