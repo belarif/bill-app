@@ -7,6 +7,7 @@ import NewBillUI from "../views/NewBillUI";
 import { localStorageMock } from "../__mocks__/localStorage";
 import { fireEvent, screen } from "@testing-library/dom";
 import { ROUTES, ROUTES_PATH } from "../constants/routes";
+import router from "../app/Router"
 
 describe('Given i am connected as an employee', () => {
   describe('When i am on new bill page', () => {
@@ -44,14 +45,21 @@ describe('Given i am connected as an employee', () => {
         document.body.innerHTML = ROUTES({ pathname })
       }
 
+      const root = document.createElement("div")
+      root.setAttribute("id", "root")
+      document.body.append(root)
+      router()
+
       const storeMock = {
         bills: () => {
           return {
-            update: (bill) => {
+            update: function(bill) {
               return {
-                then: (fn) => fn(bill)
-              };
-            },
+                then: function (fn) {
+                  return { catch: () => {}}
+                }
+              }
+            }
           };
         },
       };
