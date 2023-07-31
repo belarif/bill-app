@@ -47,11 +47,14 @@ describe('Given i am connected as an employee', () => {
       const storeMock = {
         bills: () => {
           return {
-            update: (bill) => {
+            update: function(bill) {
               return {
-                then: (fn) => fn(bill)
-              };
-            },
+                then: function (fn) {
+                  return { catch: () => {}}
+                }
+              }
+            }
+            
           };
         },
       };
