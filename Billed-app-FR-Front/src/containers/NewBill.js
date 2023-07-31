@@ -90,9 +90,7 @@ export default class NewBill {
       this.store
         .bills()
         .update({ data: JSON.stringify(bill), selector: this.billId })
-        .then(() => {
-          this.onNavigate(ROUTES_PATH["Bills"]);
-        })
+        .then( () => this.onNavigate(ROUTES_PATH["Bills"]))
         .catch((error) => console.error(error));
     }
   };
