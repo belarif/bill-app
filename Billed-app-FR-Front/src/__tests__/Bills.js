@@ -76,5 +76,38 @@ describe("Given I am connected as an employee", () => {
       fireEvent.click(buttonNewBill)
       expect(handleClick).toHaveBeenCalled()
     })
+
+    test("call to handleClickIconEye should work properly", () => {
+      const myMock = jest.fn()
+      global.$.fn.modal = () => true;
+      global.$.fn.find = () => {
+        return {
+          html: myMock
+        }
+      }
+
+      const storeMock = {
+        bills: () => {
+          return {
+            list: () => {
+              return {
+                then: (fn) => fn(bills),
+              };
+            },
+          };
+        },
+      };
+
+      const billsObject = new Bills({
+        document,
+        onNavigate: {},
+        store: storeMock,
+        localStorage: {},
+      });
+      billsObject.handleClickIconEye({getAttribute: () => 'lsfjklqjfhqkfh'})
+      const myTest = myMock.mock.calls[0][0].includes('lsfjklqjfhqkfh');
+      expect(myTest).toEqual(true);
+
+    })
   })
 })
