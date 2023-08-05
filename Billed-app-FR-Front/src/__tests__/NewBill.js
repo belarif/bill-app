@@ -63,7 +63,7 @@ describe('Given i am connected as an employee', () => {
       const handleSubmit = jest.fn((e) => newBillObjet.handleSubmit(e));
       form.addEventListener("submit", handleSubmit);
       fireEvent.submit(form);
-      expect(form).toBeTruthy();
+      expect(handleSubmit).toHaveBeenCalled();
     })
   })
 })
