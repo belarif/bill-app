@@ -28,7 +28,7 @@ describe('Given i am connected as an employee', () => {
   })
 
   describe('When i am on new bill page, i do fill fields in correct format and i click submit button', () => {
-    test('That new bill is created', () => {
+    test('POST new bill', () => {
       Object.defineProperty(window, 'localStorage', { value: localStorageMock })
       window.localStorage.setItem('user', JSON.stringify({
         type: 'Employee'
@@ -64,6 +64,9 @@ describe('Given i am connected as an employee', () => {
       form.addEventListener("submit", handleSubmit);
       fireEvent.submit(form);
       expect(handleSubmit).toHaveBeenCalled();
+      const titleBills = screen.queryByText("Mes notes de frais")
+      expect(titleBills).toBeTruthy()
     })
   })
+
 })
